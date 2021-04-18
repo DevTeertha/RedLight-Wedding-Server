@@ -1,4 +1,5 @@
 const express = require('express')
+var compression = require('compression');
 const cors = require('cors')
 const bodyParser = require('body-parser')
 const fileUpload = require('express-fileupload');
@@ -11,9 +12,9 @@ require('dotenv').config();
 
 app.use(cors())
 app.use(bodyParser.urlencoded({ extended: false }))
-app.use(bodyParser.json())
-app.use('/services',express.static('services'))
-app.use(fileUpload())
+app.use(bodyParser.json());
+app.use(fileUpload());
+app.use(compression());
 
 
 
@@ -50,6 +51,7 @@ client.connect(err => {
   app.get('/services', (req, res) => {
     redLightServices.find({})
       .toArray((err, document) => {
+        console.log('Data Collected');
         res.send(document)
       })
   })
@@ -89,9 +91,25 @@ client.connect(err => {
   })
 
   app.post('/addService', (req, res) => {
-    const serviceInfo = req.body;
-    redLightServices.insertOne(serviceInfo)
-    .then(response=>req.send(response.insertedCount>0))
+    const file = req.files.file;
+    const title = req.body.title;
+    const price = req.body.price;
+    const description = req.body.description;
+
+    const newImg = file.data;
+    const encImg = newImg.toString('base64');
+
+    const image = {
+      contentType: file.mimetype,
+      size: file.size,
+      img: Buffer.from(encImg, 'base64')
+    }
+
+    redLightServices.insertOne({title , price , description , img:image })
+    .then(response=>{
+      console.log(response.insertedCount>0)
+      req.send(response.insertedCount>0)
+    })
     .catch(err=>res.send(false))
   })
 
@@ -110,7 +128,7 @@ client.connect(err => {
       $currentDate: { "lastModified": true }
     })
       .then(response => {
-        res.send(response.modifiedCount>0);
+        res.send(response.modifiedCount > 0);
       })
   })
 
