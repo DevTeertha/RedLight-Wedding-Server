@@ -3,7 +3,6 @@ var compression = require('compression');
 const cors = require('cors')
 const bodyParser = require('body-parser')
 const fileUpload = require('express-fileupload');
-const fs = require('fs-extra');
 const MongoClient = require('mongodb').MongoClient;
 const ObjectID = require('mongodb').ObjectID;
 
