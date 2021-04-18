@@ -137,17 +137,12 @@ client.connect(err => {
       .then(response => res.send(response.deletedCount > 0))
       .catch(err => res.send(err))
   })
-
-
-
-  console.log("Database Connected");
 });
 
 
 
 app.get('/', (req, res) => {
-  console.log("Server Running");
-  res.send('Hello World')
+  res.send('Hello World');
 })
 
 app.listen(5000)
