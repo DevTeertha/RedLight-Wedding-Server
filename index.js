@@ -142,7 +142,7 @@ client.connect(err => {
 
 
 app.get('/', (req, res) => {
-  res.send('Hello World');
+  res.send('RedLight Weeding Server Running!');
 })
 
 app.listen(5000)
