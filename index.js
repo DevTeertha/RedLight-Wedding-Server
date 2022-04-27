@@ -145,4 +145,4 @@ app.get("/", (req, res) => {
   res.send("RedLight Weeding Server Running!");
 });
 
-app.listen(5000 || 8080);
+app.listen(4000 || 8080);
